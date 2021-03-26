@@ -5,6 +5,18 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Title from './Title';
+import { Button } from '@material-ui/core';
+
+
+const getDataFromAPI = async () => {
+  console.log("Hallooo")
+  console.log(await fetch("https://www.govdata.de/ckan/api/3/action/tag_list")).then((response) => {
+    console.log(response)
+    console.log(response.json)
+  })
+} 
+
+
 
 // Generate Order Data
 function createData(id, date, name, shipTo, paymentMethod, amount) {
@@ -50,6 +62,7 @@ const rows = [
 export default function Orders() {
   return (
     <React.Fragment>
+      <Button onClick={getDataFromAPI}> Debug </Button>
       <Title>Recent Orders</Title>
       <Table size="small">
         <TableHead>
