@@ -12,41 +12,38 @@ class DataTable extends React.Component {
       super(props);
       this.state = 
       {
-        data: [{name: 'Elvis Presley',
-        amount: 312.44}],
-        rows: [{name: 'Elvis Presley',
-        amount: 312.44}]
+        data: [],
       };
     }
 
-    editData(passedData){
-        const departmentsJson = departments.departments
+    getDepartmentData(fetchedData){
+        const departmentsDescription = departments.departments
         const regex =  /.*([Mm]inisterium).*/
-        let ministerien = [];
-        passedData.forEach(function(department){
+        
+        let departmentsData = [];
+        fetchedData.forEach(function(department){
             if (department.display_name.match(regex)) {
-                ministerien.push(department)
+                departmentsData.push(department)
             }
         })
 
-        console.log(ministerien)
-        ministerien.forEach(ministerium => {
-            const ministeriumJSON = departmentsJson.find((eintrag) => eintrag.name === ministerium.display_name  )
-            console.log(ministeriumJSON)
-            if(ministeriumJSON.subordinates){
-                ministeriumJSON.subordinates.forEach((subordinate => {
-                    
-                    const subordinateJson = passedData.find((eintrag) => eintrag.display_name === subordinate.name)
-                    ministerium.package_count += subordinateJson.package_count 
+        departmentsData.forEach(department => {
+            const departmentDescription = departmentsDescription.find((entry) => entry.name === department.display_name  )
+            if(departmentDescription.subordinates){
+                departmentDescription.subordinates.forEach((subordinate => {
+                    const subordinateJson = fetchedData.find((entry) => entry.display_name === subordinate.name)
+                    department.package_count += subordinateJson.package_count 
                 }))
             }
         })
+        const departmentsWithoutData = this.getDepartmentsWithoutData()
+        departmentsData.sort(function (a,b) {return b.package_count - a.package_count})
 
-        ministerien.sort(function (a,b) {return b.package_count - a.package_count})
+        return departmentsData
+    }
 
-
-
-        return ministerien
+    getDepartmentsWithoutData(){
+ 
     }
   
     componentDidMount() {
@@ -54,7 +51,7 @@ class DataTable extends React.Component {
         .then(response => response.json())
         .then(data => { 
             console.log(data.result)
-            const editedData = this.editData(data.result)
+            const editedData = this.getDepartmentData(data.result)
 
             this.setState({ data: editedData })}
            );
@@ -66,7 +63,7 @@ class DataTable extends React.Component {
     render() {
         return (
             <React.Fragment>
-              <Title>Recent Orders</Title>
+              <Title>Anzahl der Datensätze pro Ministerium</Title>
               <Table size="small">
                 <TableHead>
                   <TableRow>
