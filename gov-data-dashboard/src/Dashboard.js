@@ -11,6 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 import Orders from './Orders';
+import DataTable from './Table';
 
 function Copyright(props) {
   return (
@@ -124,6 +125,7 @@ export default function Dashboard() {
             <Grid item xs={12}>
               <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                 <Orders />
+                <DataTable />
               </Paper>
             </Grid>
           </Grid>
