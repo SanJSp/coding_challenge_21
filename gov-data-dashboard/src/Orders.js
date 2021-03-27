@@ -9,52 +9,32 @@ import { Button } from '@material-ui/core';
 
 
 const getDataFromAPI = async () => {
-  console.log("Hallooo")
-  console.log(await fetch("https://www.govdata.de/ckan/api/3/action/tag_list")).then((response) => {
-    console.log(response)
-    console.log(response.json)
-  })
+  const response = await fetch('https://www.govdata.de/ckan/api/3/action/organization_list?all_fields=true')
+  return await response.json()
 } 
 
 
-
 // Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-  return { id, date, name, shipTo, paymentMethod, amount };
+function createData(name, amount) {
+  const data = getDataFromAPI()
+  return {name, amount };
 }
 
 const rows = [
   createData(
-    0,
-    '16 Mar, 2019',
     'Elvis Presley',
-    'Tupelo, MS',
-    'VISA ⠀•••• 3719',
     312.44,
   ),
   createData(
-    1,
-    '16 Mar, 2019',
     'Paul McCartney',
-    'London, UK',
-    'VISA ⠀•••• 2574',
     866.99,
   ),
-  createData(2, '16 Mar, 2019', 'Tom Scholz', 'Boston, MA', 'MC ⠀•••• 1253', 100.81),
   createData(
-    3,
-    '16 Mar, 2019',
     'Michael Jackson',
-    'Gary, IN',
-    'AMEX ⠀•••• 2000',
     654.39,
   ),
   createData(
-    4,
-    '15 Mar, 2019',
     'Bruce Springsteen',
-    'Long Branch, NJ',
-    'VISA ⠀•••• 5919',
     212.79,
   ),
 ];
@@ -67,21 +47,15 @@ export default function Orders() {
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Sale Amount</TableCell>
+            <TableCell>Ministerium</TableCell>
+            <TableCell align="right">Anzahl Datensätze</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
+            <TableRow key={row.name}>
               <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{`$${row.amount}`}</TableCell>
+              <TableCell align="right">{row.amount}</TableCell>
             </TableRow>
           ))}
         </TableBody>
