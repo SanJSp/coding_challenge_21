@@ -22,7 +22,7 @@ class DataTable extends React.Component {
     editData(passedData){
         const departmentsJson = departments.departments
         const regex =  /.*([Mm]inisterium).*/
-        const ministerien = [];
+        let ministerien = [];
         passedData.forEach(function(department){
             if (department.display_name.match(regex)) {
                 ministerien.push(department)
@@ -39,9 +39,10 @@ class DataTable extends React.Component {
                     const subordinateJson = passedData.find((eintrag) => eintrag.display_name === subordinate.name)
                     ministerium.package_count += subordinateJson.package_count 
                 }))
-                console.log("hello")
             }
         })
+
+        ministerien.sort(function (a,b) {return b.package_count - a.package_count})
 
 
 
@@ -52,6 +53,7 @@ class DataTable extends React.Component {
         fetch('https://www.govdata.de/ckan/api/3/action/organization_list?all_fields=true')
         .then(response => response.json())
         .then(data => { 
+            console.log(data.result)
             const editedData = this.editData(data.result)
 
             this.setState({ data: editedData })}
