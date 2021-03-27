@@ -5,7 +5,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Title from './Title';
-import departments from './departments.json';
+import departmentsJSON from './departments.json';
 
 class DataTable extends React.Component {
   constructor(props) {
@@ -16,11 +16,12 @@ class DataTable extends React.Component {
   }
 
   getDepartmentData(fetchedData) {
-    const departmentsDescription = departments.departments;
+    const departmentsDescription = departmentsJSON.departments;
     const regex = /.*([Mm]inisterium).*/;
     let departmentNamesWithData = [];
     let departmentsData = [];
 
+    // collect apartments with data
     fetchedData.forEach(function (department) {
       if (department.display_name.match(regex)) {
         departmentsData.push(department);
@@ -28,6 +29,7 @@ class DataTable extends React.Component {
       }
     });
 
+    // include subordinate count 
     departmentsData.forEach((department) => {
       const departmentDescription = departmentsDescription.find(
         (entry) => entry.name === department.display_name
@@ -42,10 +44,13 @@ class DataTable extends React.Component {
       }
     });
 
+    // include departments without data
     departmentsData = this.addDepartmentsWithoutData(
       departmentsData,
       departmentNamesWithData
     );
+
+    // sort desc by count
     departmentsData.sort(function (a, b) {
       return b.package_count - a.package_count;
     });
@@ -55,13 +60,13 @@ class DataTable extends React.Component {
 
   addDepartmentsWithoutData(departmentsData, departmentNamesWithData) {
     const regex = /.*([Mm]inisterium).*/;
-    const listOfAllDepartments = [];
-    departments.departments.forEach(function (department) {
+    const allDepartments = [];
+    departmentsJSON.departments.forEach(function (department) {
       if (department.name.match(regex)) {
-        listOfAllDepartments.push(department.name);
+        allDepartments.push(department.name);
       }
     });
-    const departmentsWithoutData = listOfAllDepartments.filter(
+    const departmentsWithoutData = allDepartments.filter(
       (item) => !departmentNamesWithData.includes(item)
     );
 
@@ -73,12 +78,13 @@ class DataTable extends React.Component {
   }
 
   componentDidMount() {
-    fetch('https://www.govdata.de/ckan/api/3/action/organization_list?all_fields=true')
+    fetch(
+      'https://www.govdata.de/ckan/api/3/action/organization_list?all_fields=true'
+    )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.result);
-        const editedData = this.getDepartmentData(data.result);
-        this.setState({ data: editedData });
+        const relavantData = this.getDepartmentData(data.result);
+        this.setState({ data: relavantData });
       });
   }
 
@@ -89,8 +95,8 @@ class DataTable extends React.Component {
         <Table size='small'>
           <TableHead>
             <TableRow>
-              <TableCell>Ministerium</TableCell>
-              <TableCell align='right'>Anzahl Datensätze</TableCell>
+              <TableCell style={{"font-weight": "bold"}} >Ministerium</TableCell>
+              <TableCell style={{"font-weight": "bold"}} align='right'>Anzahl Datensätze</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
