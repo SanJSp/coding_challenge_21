@@ -1,19 +1,28 @@
-# coding_challenge_21
+## GovData Dashboard
 
-[GovData.de](https://www.govdata.de/) ist das Datenportal für Deutschland. Bund, Länder und Kommunen können hier Daten ihrer Verwaltungen anbieten. Obwohl das “Open-Data-Gesetz” dazu verpflichtet, Daten bereit zu stellen, wurden bisher nur ca. 52.000 Datensätze geteilt. 
+This webapp displays a small table displaying the amount of data-packages each ministry of germany has published on https://www.govdata.de/.
+I've used the CKA-API and React to build this app.
 
-![](https://www.govdata.de/o/govdatastyle-theme/images/datavisuals/connectionmap.jpg)
+## Setup
 
-## Aufgabe
-Stelle in einem kleinen Dashboard übersichtlich dar, wie viele Datensätze jedes Bundesministerium auf GovData zur Verfügung gestellt hat. Es sollte schnell ersichtlich sein, welche Ministerien die meisten Daten zur Verfügung gestellt haben. Länder, Kommunen und weitere Einrichtungen können ignoriert werden. 
+1. Clone this repository with `git clone https://github.com/SanJSp/coding_challenge_21.git`
+2. Enter `cd gov-data-dashboard/` in your terminal
+3. Run `npm start`
+4. Open [http://localhost:3000](http://localhost:3000) to view the site in your browser.
 
-GovData stellt zwei Schnittstellen zur Verfügung. Nutze entweder die [CKAN-API](https://www.govdata.de/ckan/api/3) [(Doku)](https://docs.ckan.org/en/2.8/api/) oder die [SPARQL-API](https://www.govdata.de/web/guest/sparql-assistent), um diese Aufgabe zu lösen. In 'departments.json' findest Du alle Bundesministerien sowie deren nachgelagerte Behörden, die Daten auf GovData geteilt haben. 
+#### Problems
 
-Nutze einen nicht-proprietären Tech-Stack deiner Wahl und erkläre in einem Readme wie wir deine Lösung zum Laufen bringen. Bitte schicke Deine Lösung per Mail an [challenge@tech4germany.org](mailto:challenge@tech4germany.org). 
+If you run into Problems with your CORS requests, I recommend you to use chrome to test the app and use this [extension](https://chrome.google.com/webstore/detail/moesif-origin-cors-change/digfbfaphojjndkpccljibejjbppifbc). I did not have enough time to look deeper into that issue.
 
-## Bewertung
-Du solltest für diese Challenge nicht mehr als 1-2 Stunden benötigen. Es ist möglich, innerhalb einer Stunde die volle Punktzahl zu erreichen.
-Wir wollen sehen, dass Du mit APIs umgehen kannst und ressourcenschonend mit ihnen bist. Du solltest Dich mit Deinen Tools wohlfühlen und in der Lage sein, sauberen Code zu schreiben. Wir erwarten, dass Du reflektieren und begründen kannst, wie Du vorgegangen bist. Das Design werden wir nicht bewerten. 
+#### What I did
 
-## Viel Spaß! 🚀
-Wir freuen uns auf deine Einreichung!
+1. Setup React using [Facebooks Guide](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app)
+2. Setup [Material-UI Dashboard](https://medium.com/swlh/building-dashboards-quickly-with-react-and-material-ui-627074ff99ff)
+3. Configure Dashboard to my liking
+4. Implement Data Fetching using the CKA-API
+5. Implemented the retrieval of the relevant data
+6. Added data for ministries that had no data
+
+#### Screenshots
+
+![](https://i.imgur.com/y9pRw83.png)
