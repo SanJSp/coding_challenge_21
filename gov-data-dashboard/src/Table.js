@@ -5,7 +5,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Title from './Title';
-import { Button } from '@material-ui/core';
+import departments from './departments.json'
 
 class DataTable extends React.Component {
     constructor(props) {
@@ -18,14 +18,43 @@ class DataTable extends React.Component {
         amount: 312.44}]
       };
     }
+
+    editData(passedData){
+        const departmentsJson = departments.departments
+        const regex =  /.*([Mm]inisterium).*/
+        const ministerien = [];
+        passedData.forEach(function(department){
+            if (department.display_name.match(regex)) {
+                ministerien.push(department)
+            }
+        })
+
+        console.log(ministerien)
+        ministerien.forEach(ministerium => {
+            const ministeriumJSON = departmentsJson.find((eintrag) => eintrag.name === ministerium.display_name  )
+            console.log(ministeriumJSON)
+            if(ministeriumJSON.subordinates){
+                ministeriumJSON.subordinates.forEach((subordinate => {
+                    
+                    const subordinateJson = passedData.find((eintrag) => eintrag.display_name === subordinate.name)
+                    ministerium.package_count += subordinateJson.package_count 
+                }))
+                console.log("hello")
+            }
+        })
+
+
+
+        return ministerien
+    }
   
     componentDidMount() {
         fetch('https://www.govdata.de/ckan/api/3/action/organization_list?all_fields=true')
         .then(response => response.json())
         .then(data => { 
-            console.log(data.result);
+            const editedData = this.editData(data.result)
 
-            this.setState({ data: data.result })}
+            this.setState({ data: editedData })}
            );
     }
   
