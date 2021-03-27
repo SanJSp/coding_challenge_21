@@ -19,11 +19,13 @@ class DataTable extends React.Component {
     getDepartmentData(fetchedData){
         const departmentsDescription = departments.departments
         const regex =  /.*([Mm]inisterium).*/
-        
+        let departmentNamesWithData = [];
         let departmentsData = [];
+        
         fetchedData.forEach(function(department){
             if (department.display_name.match(regex)) {
                 departmentsData.push(department)
+                departmentNamesWithData.push(department.display_name)
             }
         })
 
@@ -36,14 +38,28 @@ class DataTable extends React.Component {
                 }))
             }
         })
-        const departmentsWithoutData = this.getDepartmentsWithoutData()
+        departmentsData = this.addDepartmentsWithoutData(departmentsData, departmentNamesWithData)
         departmentsData.sort(function (a,b) {return b.package_count - a.package_count})
 
         return departmentsData
     }
 
-    getDepartmentsWithoutData(){
- 
+    addDepartmentsWithoutData(departmentsData, departmentNamesWithData){
+        const regex =  /.*([Mm]inisterium).*/
+        const listOfAllDepartments = []
+        departments.departments.forEach(function(department){
+            if (department.name.match(regex)) {
+                listOfAllDepartments.push(department.name)
+            }
+        })
+        const departmentsWithoutData = listOfAllDepartments.filter((item => !departmentNamesWithData.includes(item)))
+        console.log(departmentsWithoutData)
+
+        departmentsWithoutData.forEach(department => {
+            departmentsData.push({display_name: department, package_count: 0})
+        })
+
+        return departmentsData
     }
   
     componentDidMount() {
@@ -52,7 +68,6 @@ class DataTable extends React.Component {
         .then(data => { 
             console.log(data.result)
             const editedData = this.getDepartmentData(data.result)
-
             this.setState({ data: editedData })}
            );
     }
