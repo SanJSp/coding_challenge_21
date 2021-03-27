@@ -6,9 +6,10 @@ I've used the CKA-API and React to build this app.
 ## Setup
 
 1. Clone this repository with `git clone https://github.com/SanJSp/coding_challenge_21.git`
-2. Enter `cd gov-data-dashboard/` in your terminal
-3. Run `npm start`
-4. Open [http://localhost:3000](http://localhost:3000) to view the site in your browser.
+2. Enter `cd coding_challenge_21/` in your terminal
+3. Run `npm install`
+4. Run `npm start`
+5. Open [http://localhost:3000](http://localhost:3000) to view the site in your browser.
 
 #### Problems
 
